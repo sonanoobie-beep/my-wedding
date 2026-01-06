@@ -11,24 +11,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
   <title>Bunthoeun & Sina's Wedding</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
-    button{
+    body {
+      margin: 0;
+    }
+
+    /* Button position (UNCHANGED IDEA) */
+    button {
       margin-top: -50%;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Countdown overlay (ONLY for Home.jpg) */
+    .countdown-box {
+      position: absolute;
+      top: 52%;       /* adjust up/down */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #5b4636;
+      display: none;  /* hidden by default */
+    }
+
+    .time {
+      font-family: serif;
+      font-size: 64px;
+      letter-spacing: 6px;
+    }
+
+    .labels {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      font-size: 14px;
+      margin-top: 8px;
+      letter-spacing: 2px;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .time {
+        font-size: 40px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <img id="myImage" src="Bunthoeun&Sina's day.jpg" width="100%">
+
+  <!-- Image container -->
+  <div style="position: relative;">
+    <img id="myImage" src="Bunthoeun&Sina's day.jpg" width="100%">
+
+    <!-- Countdown (ON Home.jpg ONLY) -->
+    <div class="countdown-box" id="countdownBox">
+      <div class="time" id="countdown">00 : 00 : 00 : 00</div>
+      <div class="labels">
+        <div>DAYS</div>
+        <div>HOURS</div>
+        <div>MINS</div>
+        <div>SECS</div>
+      </div>
+    </div>
+  </div>
+
   <center>
-    <button class="btn btn-outline-light btn-lg" onclick="changeImage()">Details Information</button>
+    <button class="btn btn-outline-light btn-lg" onclick="changeImage()">
+      Details Information
+    </button>
   </center>
+
   <script>
+    /* Keep your button logic */
     function changeImage() {
       document.getElementById("myImage").src = "Home.jpg";
+      document.getElementById("countdownBox").style.display = "block";
     }
+
+    /* Wedding Countdown */
+    const weddingDate = new Date("2026-01-31T06:30:00").getTime();
+
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = weddingDate - now;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = "❤️ IT'S TODAY ❤️";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("countdown").innerHTML =
+        `${days} : ${hours} : ${mins} : ${secs}`;
+    }, 1000);
   </script>
+
 </body>
 </html>
 
